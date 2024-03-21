@@ -19,7 +19,7 @@ PUT http://localhost:8080/create?url=http://www.vale.com.br
 
 {
    "alias": "XYhakp",
-   "url": "http://shortener/u/XYhakp",
+   "url": "http://localhost:8080/u/XYhakp",
    "statistics": {
        "time_taken": "10ms",
    }
@@ -28,11 +28,11 @@ PUT http://localhost:8080/create?url=http://www.vale.com.br
 
 * Custom alias call:
 ```
-PUT http://shortener/create?url=http://www.vale.com.br&CUSTOM_ALIAS=vale
+PUT http://localhost:8080/create?url=http://www.vale.com.br&CUSTOM_ALIAS=vale
 
 {
    "alias": "vale",
-   "url": "http://shortener/u/vale",
+   "url": "http://localhost:8080/u/vale",
    "statistics": {
        "time_taken": "12ms",
    }
@@ -41,6 +41,6 @@ PUT http://shortener/create?url=http://www.vale.com.br&CUSTOM_ALIAS=vale
 
 * Redirect call:
 ```
-GET http://shortener/u/vale
+GET http://localhost:8080/u/vale
 ```
 

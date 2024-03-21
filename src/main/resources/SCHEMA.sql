@@ -10,16 +10,16 @@ CREATE EXTENSION pgcrypto;
 
 -- Function to generate alias
 -- Keeps generating alias (8 digit base64) until it finds a unique one
-CREATE OR REPLACE FUNCTION generate_alias() RETURNS VARCHAR(8) AS $$
+CREATE OR REPLACE FUNCTION generate_alias() RETURNS VARCHAR(64) AS $$
 DECLARE
     vl_alias_pretrim VARCHAR;
-    vl_alias VARCHAR(8);
+    vl_alias VARCHAR(64);
 BEGIN
     LOOP
-        vl_alias_pretrim := encode(gen_random_bytes(6), 'base64');
+        vl_alias_pretrim := encode(gen_random_bytes(48), 'base64');
         vl_alias_pretrim := REPLACE(vl_alias_pretrim, '/', '_');
         vl_alias_pretrim := REPLACE(vl_alias_pretrim, '+', '-');
-        vl_alias := SUBSTR(vl_alias_pretrim, 1, 8);
+        vl_alias := SUBSTR(vl_alias_pretrim, 1, 64);
         EXIT WHEN NOT EXISTS (SELECT 1 FROM aliases WHERE alias = vl_alias);
     END LOOP;
     RETURN vl_alias;
@@ -30,7 +30,7 @@ $$ LANGUAGE plpgsql;
 CREATE TABLE IF NOT EXISTS aliases (
     id SERIAL PRIMARY KEY,
     url VARCHAR(255) NOT NULL,
-    alias VARCHAR(8) NOT NULL UNIQUE DEFAULT generate_alias(),
+    alias VARCHAR(64) NOT NULL UNIQUE DEFAULT generate_alias(),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
